@@ -1,0 +1,15 @@
+# ninja log v5
+0	1033	1657026418974684490	CMakeFiles/tuning-transfer.dir/source/abstract/abstract-client.cpp.o	eea1747b820403bd
+1	26161	1657026444083111121	CMakeFiles/tuning-transfer.dir/source/http/http-server.cpp.o	11c579f6767d1698
+2	1198	1657026419138687278	CMakeFiles/tuning-transfer.dir/source/transfer-client.cpp.o	a0c1d68a332e954a
+0	29793	1657026447715172808	CMakeFiles/tuning-transfer.dir/source/http/http-client.cpp.o	895ee76433164a04
+1	819	1657026418762680886	CMakeFiles/tuning-transfer.dir/source/abstract/abstract-server.cpp.o	4938411d8ce43667
+29793	30027	1657026447955176884	libtuning-transfer.a	2376691543315d18
+4	1026	1657026418962684286	CMakeFiles/tuning-transfer.dir/source/transfer-server.cpp.o	e5f5d2bcc3b07cf1
+18	972	1657538209520016331	CMakeFiles/tuning-transfer.dir/source/abstract/abstract-server.cpp.o	4938411d8ce43667
+18	1076	1657538209624018118	CMakeFiles/tuning-transfer.dir/source/abstract/abstract-client.cpp.o	eea1747b820403bd
+20	1120	1657538209668018873	CMakeFiles/tuning-transfer.dir/source/transfer-server.cpp.o	e5f5d2bcc3b07cf1
+19	1235	1657538209784020865	CMakeFiles/tuning-transfer.dir/source/transfer-client.cpp.o	a0c1d68a332e954a
+19	27744	1657538236272466177	CMakeFiles/tuning-transfer.dir/source/http/http-server.cpp.o	11c579f6767d1698
+18	31157	1657538239684523549	CMakeFiles/tuning-transfer.dir/source/http/http-client.cpp.o	895ee76433164a04
+31157	32574	1657538241100547360	libtuning-transfer.a	2376691543315d18

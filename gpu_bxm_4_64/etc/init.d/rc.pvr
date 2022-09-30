@@ -1,0 +1,120 @@
+#!/bin/bash
+############################################################################ ###
+#@Copyright     Copyright (c) Imagination Technologies Ltd. All Rights Reserved
+#@License       MIT
+# The contents of this file are subject to the MIT license as set out below.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#### ###########################################################################
+
+# Auto-generated for thead_linux from rogueddk_1.16@6099580
+#
+
+load_pvr()
+{
+	load_modules_exit_status=0
+
+	# Load the PVR Services module.
+	#
+	
+	if [ -n "$PVR_SRVKM_PARAMS" ] && ! /sbin/modprobe -q pvrsrvkm --dry-run --first-time; then
+		echo "Cannot set parameters for pvrsrvkm. Module already loaded."
+		some_modules_already_loaded=1
+		readonly load_modules_exit_status=1
+	elif ! /sbin/modprobe -q pvrsrvkm $PVR_SRVKM_PARAMS; then
+		echo "Module pvrsrvkm failed to load. Retrying."
+		if [ -z $depmod_has_been_run ]; then
+			if [ -e /sbin/depmod ]; then
+				echo "Running /sbin/depmod"
+				/sbin/depmod && depmod_has_been_run=1
+			fi
+		fi
+		if ! /sbin/modprobe -q pvrsrvkm $PVR_SRVKM_PARAMS ; then return; fi
+	fi
+
+	# Load 3rd party module(s).
+	#
+		
+	if [ -n "$PVR_DISPLAY_PARAMS" ] && ! /sbin/modprobe -q drm_nulldisp --dry-run --first-time; then
+		echo "Cannot set parameters for drm_nulldisp. Module already loaded."
+		some_modules_already_loaded=1
+	elif ! /sbin/modprobe -q drm_nulldisp $PVR_DISPLAY_PARAMS; then
+		echo "Module drm_nulldisp failed to load. Retrying."
+		if [ -z $depmod_has_been_run ]; then
+			if [ -e /sbin/depmod ]; then
+				echo "Running /sbin/depmod"
+				/sbin/depmod && depmod_has_been_run=1
+			fi
+		fi
+		if ! /sbin/modprobe -q drm_nulldisp $PVR_DISPLAY_PARAMS; then echo "Continuing to load PowerVR services (drm_nulldisp failed to load)"; drm_nulldisp_failed=1; fi
+	fi
+
+
+	if [ -n "$some_modules_already_loaded" ]; then
+		echo
+		echo "Could not set parameters for some modules."
+		echo "To fix this ensure automatic loading of those modules is disabled and restart the driver."
+		echo "See the platform guide for more details."
+	else
+		echo "Loaded PowerVR consumer services."
+	fi
+
+	return $load_modules_exit_status;
+}
+
+unload_pvr()
+{
+
+	# Unload 3rd party module(s).
+	#
+		if /sbin/modprobe -r drm_nulldisp; then :; else echo "Warning: Could not unload drm_nulldisp"; fi
+
+	# Unload the PVR Services module.
+	#
+	if /sbin/modprobe -r pvrsrvkm; then :; else return 1; fi
+
+	echo "Unloaded PowerVR consumer services."
+	return 0;
+}
+
+# Deal with the type of invocation we get.
+#
+case "$1" in
+start)
+	load_pvr
+	;;
+stop)
+	if ! unload_pvr; then
+		echo "Couldn't unload modules" >&2;
+		exit 1
+	fi
+	;;
+reload|restart)
+	if unload_pvr; then
+		load_pvr
+	else
+		echo "Couldn't unload modules" >&2;
+		exit 1
+	fi
+	;;
+*)
+	echo "$0: unknown argument $1." >&2;
+	;;
+esac
+

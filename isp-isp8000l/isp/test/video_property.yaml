@@ -1,0 +1,41 @@
+devices:
+    - name: isp
+      property:
+        - {name: horization flip, pid: 0x1, type: bool, min: 0, max: 1, step: 1, default: false, flag: 0, enable: false}
+        - {name: vertically flip, pid: 0x2, type: bool, min: 0, max: 1, step: 1, default: false, flag: 0, enable: false}
+        - {name: rotation, pid: 0x3, type: int, min: 0, max: 270, step: 90, default: 0, flag: 0, enable: false}
+        - {name: exposure mode, pid: 0x11, type: enum, min: 0, max: 3, step: 1, default: 0, flag: 0, enable: true}
+        - {name: exposure auto priority, pid: 0x13, type: bool, min: 0, max: 1, step: 1, default: false, flag: 0, enable: false}
+        - {name: exposure bias, pid: 0x14, type: int, min: -6, max: 6, step: 1, default: 0, flag: 0, enable: true}
+        - {name: exposure metering, pid: 0x15, type: enum, min: 0, max: 3, step: 1, default: 0, flag: 0, enable: false}
+        - {name: focus absolute, pid: 0x21, type: int, min: 0, max: 100, step: 1, default: 0, flag: 0, enable: false}
+        - {name: focus relative, pid: 0x22, type: int, min: 0, max: 100, step: 1, default: 0, flag: 0, enable: false}
+        - {name: focus auto, pid: 0x23, type: bool, min: 0, max: 1, step: 1, default: false, flag: 0, enable: false}
+        - {name: auto focus start, pid: 0x24, type: bool, min: 0, max: 1, step: 1, default: false, flag: 0, enable: false}
+        - {name: auto focus stop, pid: 0x25, type: bool, min: 0, max: 1, step: 1, default: false, flag: 0, enable: false}
+        - {name: auto focus status, pid: 0x26, type: bitmask, min: 0, max: 8, step: 2, default: 0, flag: 0, enable: false}
+        - {name: auto preset white balance, pid: 0x31, type: enum, min: 0, max: 3, step: 1, default: 0, flag: 0, enable: true}
+        - {name: 3A LOCK, pid: 0x32, type: bitmask, min: 1, max: 4, step: 2, default: 1, flag: 0, enable: false}
+        - {name: red gain, pid: 0x41, type: int, min: 1, max: 2147483647, step: 1, default: 256, flag: 0, enable: true}
+        - {name: green gain, pid: 0x42, type: int, min: 1, max: 2147483647, step: 1, default: 256, flag: 0, enable: true}
+        - {name: blue gain, pid: 0x43, type: int, min: 1, max: 2147483647, step: 1, default: 256, flag: 0, enable: true}
+        - {name: wide dynamic range, pid: 0x44, type: bool, min: 0, max: 1, step: 1, default: false, flag: 0, enable: false}
+        - {name: pan relative, pid: 0x51, type: int, min: -648000, max: 648000, step: 1, default: 0, flag: 0, enable: false}
+        - {name: tilt relative, pid: 0x52, type: int, min: -648000, max: 648000, step: 1, default: 0, flag: 0, enable: false}
+        - {name: pan absolute, pid: 0x53, type: int, min: -648000, max: 648000, step: 1, default: 0, flag: 0, enable: false}
+        - {name: pan reset, pid: 0x55, type: bool, min: 0, max: 1, step: 1, default: false, flag: 0, enable: false}
+        - {name: tilt reset, pid: 0x56, type: bool, min: 0, max: 1, step: 1, default: false, flag: 0, enable: false}
+        - {name: hdr mode, pid: 0x61, type: enum, min: 0, max: 3, step: 1, default: 0, flag: 0, enable: true}
+        - {name: band stop filter, pid: 0x62, type: bitmask, min: 1, max: 4, step: 2, default: 1, flag: 0, enable: false}
+        - {name: image stabilization, pid: 0x63, type: bool, min: 0, max: 1, step: 1, default: false, flag: 0, enable: false}
+    - name: dw
+      property:
+        - {name: horization flip, pid: 0x1, type: bool, min: 0, max: 1, step: 1, default: false, flag: 0, enable: true}
+        - {name: vertically flip, pid: 0x2, type: bool, min: 0, max: 1, step: 1, default: false, flag: 0, enable: true}
+        - {name: rotation, pid: 0x3, type: int, min: 0, max: 270, step: 90, default: 0, flag: 0, enable: true}
+        - {name: zoom absolute, pid: 0x45, type: int, min: 0, max: 100, step: 1, default: 0, flag: 0, enable: false}
+        - {name: zoom relative, pid: 0x46, type: int, min: 0, max: 100, step: 1, default: 0, flag: 0, enable: false}
+        - {name: zoom continous, pid: 0x47, type: int, min: 0, max: 100, step: 1, default: 0, flag: 0, enable: false}
+    - name: vivcam
+      property:
+        - {name: exposure absolute, pid: 0x12, type: int, min: 0, max: 10000, step: 1, default: 100, flag: 0, enable: true}

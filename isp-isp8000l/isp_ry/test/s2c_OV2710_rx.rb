@@ -1,0 +1,175 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+
+begin
+  puts <<USAGE_DOCUMENT
+Usage: s2c_OV2710_rx.rb bus_id
+USAGE_DOCUMENT
+  exit
+end unless ARGV.length >= 1
+
+bus_id = ARGV[0]
+
+load "/root/sdk/S2C/bin/common/i2c_channel.rb"
+include MemoryMappedIO
+
+bus_id_hex = bus_id.to_i(16)
+
+
+reg_bar = eval(ENV["gpu_regbase"]) | 0x30_0000
+
+unless mread(reg_bar + 0x00_8000, 'w') == 0x8765_4321 || mread(reg_bar + 0x00_8000, 'w') == 0x0fed_cba9
+  puts "ERROR: Device axilite_agent is not found."
+  exit
+end
+
+################################################################################
+def time_of(sec)
+  min, second = sec.divmod(60)
+  hrs, minute = min.divmod(60)
+  day, hour   = hrs.divmod(24)
+  ((day == 0)? "": "#{day} day%s"%((day>1)? "s":"")) +
+  ((hour == 0)? "": "#{hour} hour%s"%((hour>1)? "s":"")) +
+  ((minute == 0)? "": "#{minute} minute%s"%((minute>1)? "s":"")) +
+  "#{second} second%s"%((second>1)? "s":"")
+end
+
+class Array
+
+  def ask_one_item(prompt="Please select one item:", ins=$stdin, outs=$stdout, errs=$stderr)
+    return self.pop if(self.size == 1)
+    loop do
+      outs.puts prompt
+      self.inject(1) { |item_idx, e|	outs.puts "  (#{item_idx}) #{e}"; item_idx=item_idx+1}
+      outs.print "Choose(Enter only to exit): "
+      s = ins.gets
+      exit if (s == nil)
+      s.chomp!
+      exit if (s == "")
+      if (1 .. self.size) === s.to_i
+        return self[s.to_i - 1]
+      end
+      errs.puts "Please input the valid item number."
+    end
+  end
+
+end
+
+################################################################################
+
+#i2c_program_file = ARGV[0]
+#do_hw_reset = false
+#
+#ARGV[1..-1].each do |option_item|
+#  do_hw_reset = true if(option_item =~ /do_hw_reset/i)
+#end
+#
+# if do_hw_reset
+#  rsd_ctrl = mread(0x43c1_0074, 'w')
+#  rsd_ctrl &= ~0x10
+#  mwrite(0x43c1_0074, 'w', rsd_ctrl)
+#  sleep(1.0)
+#  rsd_ctrl |= 0x10
+#  mwrite(0x43c1_0074, 'w', rsd_ctrl)
+#  sleep(1.0)
+# end
+
+
+ i2c_access = I2C_channel.new(:extra_delay=>0, :reg_base=>reg_bar, :gpio_reg_addr=>(reg_bar|0x80f0|(bus_id_hex<<2)))
+
+
+$csi_i2c_access = i2c_access
+
+def csi_i2c_read(slave_addr, addr)
+  $csi_i2c_access.da_ra_rdata(slave_addr, [addr].pack("S*").unpack("CC").reverse)
+end
+
+def csi_i2c_write(slave_addr, addr, *data)
+  $csi_i2c_access.da_ra_wdata(slave_addr, [addr].pack("S*").unpack("CC").reverse, *data)
+end
+
+################################################################################
+[
+  [ 0x6c, 0x3103, 0x03],
+  [ 0x6c, 0x3008, 0x82],
+  [ 0x6c, 0x3017, 0x7f],
+  [ 0x6c, 0x3018, 0xfc],
+  [ 0x6c, 0x3706, 0x61],
+  [ 0x6c, 0x3712, 0x0c],
+  [ 0x6c, 0x3630, 0x6d],
+  [ 0x6c, 0x3801, 0xb4],
+  [ 0x6c, 0x3621, 0x04],
+  [ 0x6c, 0x3604, 0x60],
+  [ 0x6c, 0x3603, 0xa7],
+  [ 0x6c, 0x3631, 0x26],
+  [ 0x6c, 0x3600, 0x04],
+  [ 0x6c, 0x3620, 0x37],
+  [ 0x6c, 0x3623, 0x00],
+  [ 0x6c, 0x3702, 0x9e],
+  [ 0x6c, 0x3703, 0x74],
+  [ 0x6c, 0x3704, 0x10],
+  [ 0x6c, 0x370d, 0x0f],
+  [ 0x6c, 0x3713, 0x8b],
+  [ 0x6c, 0x3714, 0x74],
+  [ 0x6c, 0x3710, 0x9e],
+  [ 0x6c, 0x3801, 0xc4],
+  [ 0x6c, 0x3605, 0x05],
+  [ 0x6c, 0x3606, 0x12],
+  [ 0x6c, 0x302d, 0x90],
+  [ 0x6c, 0x370b, 0x40],
+  [ 0x6c, 0x3716, 0x31],
+  [ 0x6c, 0x380d, 0x74],
+  [ 0x6c, 0x5181, 0x20],
+  [ 0x6c, 0x518f, 0x00],
+  [ 0x6c, 0x4301, 0xff],
+  [ 0x6c, 0x4303, 0x00],
+  [ 0x6c, 0x3a00, 0x78],
+  [ 0x6c, 0x300f, 0x88],
+  [ 0x6c, 0x3011, 0x28],
+  [ 0x6c, 0x3a1a, 0x06],
+  [ 0x6c, 0x3a18, 0x00],
+  [ 0x6c, 0x3a19, 0x7a],
+  [ 0x6c, 0x3a13, 0x54],
+  [ 0x6c, 0x382e, 0x0f],
+  [ 0x6c, 0x3818, 0x80],  # mirror and flip
+  [ 0x6c, 0x381a, 0x1a],
+  [ 0x6c, 0x5688, 0x03],
+  [ 0x6c, 0x5684, 0x07],
+  [ 0x6c, 0x5685, 0xa0],
+  [ 0x6c, 0x5686, 0x04],
+  [ 0x6c, 0x5687, 0x43],
+
+  [ 0x6c, 0x3010, 0x00],
+
+  [ 0x6c, 0x3011, 0x0a],
+  [ 0x6c, 0x300f, 0x8a],
+  [ 0x6c, 0x3017, 0x00],
+  [ 0x6c, 0x3018, 0x00],
+  [ 0x6c, 0x300e, 0x04],
+  [ 0x6c, 0x4801, 0x0f],
+  [ 0x6c, 0x300f, 0xc3],
+  [ 0x6c, 0x3a0f, 0x40],
+  [ 0x6c, 0x3a10, 0x38],
+  [ 0x6c, 0x3a1b, 0x48],
+  [ 0x6c, 0x3a1e, 0x30],
+  [ 0x6c, 0x3a11, 0x90],
+  #[ 0x6c, 0x350c, 0x04],
+
+  [ 0x6c, 0x3503, 0x07],
+  #[ 0x6c, 0x350c, 0x0f],
+  [ 0x6c, 0x350c, 0x01],
+  [ 0x6c, 0x350d, 0x4b],
+
+  #[ 0x6c, 0x3012, 0x03],
+  [ 0x6c, 0x3012, 0x04],
+  #[ 0x6c, 0x3012, 0x05],
+
+  [ 0x6c, 0x3a1f, 0x10]
+].each do |i2c_reg_item|
+  csi_i2c_write(*i2c_reg_item[0..-1])
+  data_rd_back = csi_i2c_read(*i2c_reg_item[0..1])
+  puts "i2c_cfg( wr, bus: %01x, dev=0x%02x, reg_idx=0x%02x, wdata=0x%02x), then rdata=0x%02x in return." % [bus_id, i2c_reg_item[0], i2c_reg_item[1], i2c_reg_item[2], data_rd_back]
+end
+
+

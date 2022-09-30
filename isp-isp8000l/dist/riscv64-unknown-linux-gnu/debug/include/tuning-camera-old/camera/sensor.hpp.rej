@@ -1,0 +1,19 @@
+diff a/include/camera/sensor.hpp b/include/camera/sensor.hpp	(rejected hunks)
+@@ -27,7 +27,7 @@
+ namespace camera {
+ 
+ struct Sensor : Object {
+-  Sensor(int32_t);
++  Sensor(clb::Sensor &, int32_t);
+   ~Sensor();
+ 
+   struct Resolution {
+@@ -109,6 +109,8 @@ struct Sensor : Object {
+   const IsiRegDescription_t *pRegisterTable = nullptr;
+   const IsiSensor_t *pSensor = nullptr;
+ 
++  clb::Sensor &calibrationSensor;
++
+   int64_t csiFormat;
+   uint32_t SensorHdrMode;
+   uint32_t SensorHdrStichMode;

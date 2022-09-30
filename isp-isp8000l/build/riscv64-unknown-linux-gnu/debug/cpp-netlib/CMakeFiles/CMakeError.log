@@ -1,0 +1,50 @@
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0/git/build/riscv64-unknown-linux-gnu/debug/cpp-netlib/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0/git/tuning-install/tools/riscv64-unknown-linux-gnu/bin/ninja cmTC_de4c0 && [1/2] Building C object CMakeFiles/cmTC_de4c0.dir/src.c.o
+[2/2] Linking C executable cmTC_de4c0
+FAILED: cmTC_de4c0 
+: && /home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0/recipe-sysroot-native/usr/bin/riscv64-oe-linux/riscv64-linux-gcc     -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --no-sysroot-suffix --sysroot=/home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0/recipe-sysroot -O2 -pipe -g -feliminate-unused-debug-types -fmacro-prefix-map=/home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0=/usr/src/debug/isp-isp8000l/1.0-r0                      -fdebug-prefix-map=/home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0=/usr/src/debug/isp-isp8000l/1.0-r0                      -fdebug-prefix-map=/home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0/recipe-sysroot=                      -fdebug-prefix-map=/home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0/recipe-sysroot-native= -DCMAKE_HAVE_LIBC_PTHREAD -Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed -Wl,--build-id=sha1 -Wl,-z,relro,-z,now   -rdynamic CMakeFiles/cmTC_de4c0.dir/src.c.o -o cmTC_de4c0   && :
+/home/jianghm.bsp/bsp_1_1_8/riscv-toolchain/bin/../lib/gcc/riscv64-unknown-linux-gnu/10.2.0/../../../../riscv64-unknown-linux-gnu/bin/ld: CMakeFiles/cmTC_de4c0.dir/src.c.o: in function `main':
+/usr/src/debug/isp-isp8000l/1.0-r0/git/build/riscv64-unknown-linux-gnu/debug/cpp-netlib/CMakeFiles/CMakeTmp/src.c:11: undefined reference to `pthread_create'
+/home/jianghm.bsp/bsp_1_1_8/riscv-toolchain/bin/../lib/gcc/riscv64-unknown-linux-gnu/10.2.0/../../../../riscv64-unknown-linux-gnu/bin/ld: /usr/src/debug/isp-isp8000l/1.0-r0/git/build/riscv64-unknown-linux-gnu/debug/cpp-netlib/CMakeFiles/CMakeTmp/src.c:11: undefined reference to `pthread_detach'
+/home/jianghm.bsp/bsp_1_1_8/riscv-toolchain/bin/../lib/gcc/riscv64-unknown-linux-gnu/10.2.0/../../../../riscv64-unknown-linux-gnu/bin/ld: /usr/src/debug/isp-isp8000l/1.0-r0/git/build/riscv64-unknown-linux-gnu/debug/cpp-netlib/CMakeFiles/CMakeTmp/src.c:11: undefined reference to `pthread_cancel'
+/home/jianghm.bsp/bsp_1_1_8/riscv-toolchain/bin/../lib/gcc/riscv64-unknown-linux-gnu/10.2.0/../../../../riscv64-unknown-linux-gnu/bin/ld: /usr/src/debug/isp-isp8000l/1.0-r0/git/build/riscv64-unknown-linux-gnu/debug/cpp-netlib/CMakeFiles/CMakeTmp/src.c:12: undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+ninja: build stopped: subcommand failed.
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0/git/build/riscv64-unknown-linux-gnu/debug/cpp-netlib/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0/git/tuning-install/tools/riscv64-unknown-linux-gnu/bin/ninja cmTC_91e9e && [1/2] Building C object CMakeFiles/cmTC_91e9e.dir/CheckFunctionExists.c.o
+[2/2] Linking C executable cmTC_91e9e
+FAILED: cmTC_91e9e 
+: && /home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0/recipe-sysroot-native/usr/bin/riscv64-oe-linux/riscv64-linux-gcc     -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security --no-sysroot-suffix --sysroot=/home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0/recipe-sysroot -O2 -pipe -g -feliminate-unused-debug-types -fmacro-prefix-map=/home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0=/usr/src/debug/isp-isp8000l/1.0-r0                      -fdebug-prefix-map=/home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0=/usr/src/debug/isp-isp8000l/1.0-r0                      -fdebug-prefix-map=/home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0/recipe-sysroot=                      -fdebug-prefix-map=/home/jianghm.bsp/bsp_1_1_8/thead-build/light-fm/tmp-glibc/work/riscv64-oe-linux/isp-isp8000l/1.0-r0/recipe-sysroot-native= -DCHECK_FUNCTION_EXISTS=pthread_create -Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed -Wl,--build-id=sha1 -Wl,-z,relro,-z,now   -rdynamic CMakeFiles/cmTC_91e9e.dir/CheckFunctionExists.c.o -o cmTC_91e9e  -lpthreads && :
+/home/jianghm.bsp/bsp_1_1_8/riscv-toolchain/bin/../lib/gcc/riscv64-unknown-linux-gnu/10.2.0/../../../../riscv64-unknown-linux-gnu/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+ninja: build stopped: subcommand failed.
+
+
+

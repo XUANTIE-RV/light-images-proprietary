@@ -1,0 +1,8 @@
+# ninja log v5
+2	726	1657026392342231626	libs/network/src/CMakeFiles/cppnetlib-uri.dir/uri/schemes.cpp.o	eea196c2dbc67960
+0	5691	1657026397302315961	libs/network/src/CMakeFiles/cppnetlib-client-connections.dir/client.cpp.o	de4c998836aafce6
+5692	5729	1657026397346316709	libs/network/src/libcppnetlib-client-connections.a	ab91a1855fdc88f1
+0	10433	1657026402034396452	libs/network/src/CMakeFiles/cppnetlib-server-parsers.dir/server_request_parsers_impl.cpp.o	c04a1101d5d9044a
+10434	10462	1657026402078397200	libs/network/src/libcppnetlib-server-parsers.a	2752168de319fc45
+1	23744	1657026415350622883	libs/network/src/CMakeFiles/cppnetlib-uri.dir/uri/uri.cpp.o	c7a00c3a808ee006
+23744	23851	1657026415458624720	libs/network/src/libcppnetlib-uri.a	aa9185e22863b6e6
